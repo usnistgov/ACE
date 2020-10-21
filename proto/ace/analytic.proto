@@ -1,0 +1,143 @@
+// Initial protocol buffer definition for NIST-ACE Analytic Framework analytic
+// communication.  Defines services for processing video frames via gRPC and
+// streaming gRPC.  Analytics can implement the functions defined in the resulting
+// auto-generated protobuf code (ie. pkg/analyticproto/analytic.pb.go) or use
+// the analyticservice library to register functions with the gRPC server
+// (provided as a convenience).
+//
+// Command to compile protocol buffers for golang:
+// $ protoc -I./proto --go_out=plugins=grpc:./pkg/analyticproto/ ./proto/*.proto
+syntax = "proto3";  
+package ace;
+
+import "google/rpc/status.proto";
+
+// Point is a 2D cartesian coordinate specified as X, Y
+message Point{
+  int32 x = 1;
+  int32 y = 2;
+}
+
+// Region of interest is either a bounding box or pixel mask used to denote an
+// area of the video frame for which the classification applies. Example: A
+// bounding box that defines the rough outline of a person.
+message RegionOfInterest{
+  oneof localization {
+    BoundingBox box = 1;
+    PixelMask mask  = 2;
+  }
+
+  string classification = 5;
+  float confidence = 3;
+  string supplement = 4;
+}
+
+// Pixel Mask is a list of pixels (Points) which define a region of interest in
+// the video frame.
+message PixelMask{
+  repeated Point pixel = 1;
+}
+
+// Bounding box is a rectangle defined by two non-adjacent corners which themselves
+// are Points (as defined above).
+message BoundingBox{
+  Point corner1 = 1;
+  Point corner2 = 2;
+}
+
+// Frame contains the bytes of a video frame along with the shape and number of
+// channels.
+message Frame{
+  bytes img = 1;
+  int32 width = 2;
+  int32 height = 3;
+  int32 color = 4;
+}
+
+// InputFrame contains a video frame along with a framenumber designating it's
+// position in the stream and a timestamp specifying when the frame was generated.
+message InputFrame{
+  Frame frame = 1;
+  int64 frame_num = 2;    // The number of the frame if indexed
+  float timestamp = 3;  // The timestamp of the frame in the video
+  int64 frame_byte_size = 4;
+}
+
+message ProcessFrameRequest{
+  InputFrame frame = 1;
+  AnalyticData analytic = 2;
+  string session_id = 3;
+}
+
+// FrameData contains a series of RegionOfInterests defining areas of the frame.
+message FrameData{
+  repeated RegionOfInterest roi = 1;
+  int64 start_time_millis = 3;
+  int64 end_time_millis = 4; 
+  google.rpc.Status status = 5;
+  string stream_addr = 6;
+  map<string, string> tags = 7;
+  string supplemental_data = 8;
+}
+
+//
+message FrameRequest {
+  repeated AnalyticData analytics = 1;
+}
+
+message AnalyticData {
+  string name = 1;
+  string addr = 2;
+  bool requires_gpu = 3;
+  repeated string operations = 4;
+  map<string, string> filters = 5;
+  repeated string replica_addrs = 6;
+}
+
+message CompositeResults {
+  repeated ProcessedFrame results = 1;
+}
+
+// CompositeFrame contains the original frame and analytic results
+message ProcessedFrame {
+  InputFrame frame = 1;
+  FrameData data = 2;
+  AnalyticData analytic = 3;
+  string session_id = 4;
+}
+
+// An empty proto
+message Empty{
+
+}
+
+message AnalyticStatus{
+ string status = 1;
+}
+
+message OutputParams {
+  string stream_addr = 1;
+  string db_addr = 2;
+}
+
+message StreamRequest{
+  string stream_source = 1;
+  AnalyticData analytic = 2;
+  bool return_frame = 3;
+  int32 frame_width = 4;
+  int32 frame_height = 5;
+  string kafka_addr = 6;
+  string db_addr = 7;
+  string session_id = 8;
+  map<string, string> system_tags = 9;
+}
+
+// Analytic service defines the functions for processing video frames via
+// streaming or non-streaming (unary) RPC
+service Analytic {
+  rpc StreamVideoFrame(stream InputFrame) returns (stream ProcessedFrame);
+  rpc ProcessVideoFrame(ProcessFrameRequest) returns (ProcessedFrame);
+  rpc ConfigVideoStream(stream StreamRequest) returns (stream ProcessedFrame);
+  rpc GetFrame(FrameRequest) returns(CompositeResults);
+  rpc CheckStatus(Empty) returns(AnalyticStatus);
+}
