@@ -1,25 +1,24 @@
 #!/bin/python
 
-import cv2
-import click
 import functools
-import grpc
 import json
-import uuid
-import sys
-import numpy as np
 import logging
+import sys
 import threading
-
+import uuid
 from queue import Queue
-from grpc_health.v1 import health_pb2
-from grpc_health.v1 import health_pb2_grpc
+
+import click
+import cv2
+import grpc
+import numpy as np
 from google.protobuf import json_format
+from grpc_health.v1 import health_pb2, health_pb2_grpc
 
 from ace import aceclient, analytic_pb2, analyticservice, grpcservice
-from ace.streamproxy import StreamingProxy, TestClient
 from ace.rtsp import RTSPHandler
-from ace.utils import render, FrameFilter
+from ace.streamproxy import StreamingProxy, TestClient
+from ace.utils import FrameFilter, render
 
 logger = logging.getLogger(__name__)
 
@@ -56,15 +55,15 @@ def main(ctx, debug):
 @main.command()
 @click.pass_context
 @click.option("--stream_source", "-s", required=True, help="Address of the stream for the analytic to process.")
-@click.option("--kafka_addr", "-k", default=None, help="Address of the Kafka broker to which the analytic will send output metadata.")
+@click.option("--msg_addr", "-k", default=None, help="Address of the message broker to which the analytic will send output metadata.")
 @click.option("--db_addr", "-d", default=None, help="Address of the database to which the analytic will write output.")
 @click.option("--analytic_host", default="localhost", help="Address of the analytic to connect to.")
 @click.option("--analytic_port", default=3000, help="Port that the configuration endpoint runs on for the analytic.")
 @click.option("--tags", "-t",  multiple=True, help="Tag to add to the analytic output. Format is 'key=value'")
-def config(ctx, stream_source, kafka_addr, db_addr, analytic_host, analytic_port, tags):
+def config(ctx, stream_source, msg_addr, db_addr, analytic_host, analytic_port, tags):
     """
     Command used to configure the specified analytic to connect to an RTSP stream, process the video, and publish 
-    the results to the specified database and kafka brokers (if any).
+    the results to the specified database and message brokers (if any).
     """
     tag_map = {}
     for tag_str in tags:
@@ -73,7 +72,7 @@ def config(ctx, stream_source, kafka_addr, db_addr, analytic_host, analytic_port
         addr="{!s}:{!s}".format(analytic_host, analytic_port))
     client = aceclient.ConfigClient(host=analytic_host, port=analytic_port)
     client.config(src=stream_source, analytic=a,
-                  kafka_addr=kafka_addr, db_addr=db_addr, tags=tag_map)
+                  messenger_addr=msg_addr, db_addr=db_addr, stream_id=str(uuid.uuid4()), tags=tag_map)
 
 
 @main.command()
@@ -124,7 +123,8 @@ def rtsp(ctx, src, endpoint, verbose):
     import gi
     gi.require_version('Gst', '1.0')
     gi.require_version('GstRtspServer', '1.0')
-    from gi.repository import Gst, GstRtspServer, GObject
+    from gi.repository import GObject, Gst, GstRtspServer
+
     from ace.rtspserver import GstServer
     GObject.threads_init()
     Gst.init(None)

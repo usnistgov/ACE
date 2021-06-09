@@ -21,6 +21,11 @@ class AnalyticStub(object):
                 request_serializer=ace_dot_analytic__pb2.InputFrame.SerializeToString,
                 response_deserializer=ace_dot_analytic__pb2.ProcessedFrame.FromString,
                 )
+        self.ProcessVideoFrameBatch = channel.unary_unary(
+                '/ace.Analytic/ProcessVideoFrameBatch',
+                request_serializer=ace_dot_analytic__pb2.ProcessFrameBatchRequest.SerializeToString,
+                response_deserializer=ace_dot_analytic__pb2.ProcessedFrameBatch.FromString,
+                )
         self.ProcessVideoFrame = channel.unary_unary(
                 '/ace.Analytic/ProcessVideoFrame',
                 request_serializer=ace_dot_analytic__pb2.ProcessFrameRequest.SerializeToString,
@@ -49,6 +54,12 @@ class AnalyticServicer(object):
     """
 
     def StreamVideoFrame(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ProcessVideoFrameBatch(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -85,6 +96,11 @@ def add_AnalyticServicer_to_server(servicer, server):
                     servicer.StreamVideoFrame,
                     request_deserializer=ace_dot_analytic__pb2.InputFrame.FromString,
                     response_serializer=ace_dot_analytic__pb2.ProcessedFrame.SerializeToString,
+            ),
+            'ProcessVideoFrameBatch': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProcessVideoFrameBatch,
+                    request_deserializer=ace_dot_analytic__pb2.ProcessFrameBatchRequest.FromString,
+                    response_serializer=ace_dot_analytic__pb2.ProcessedFrameBatch.SerializeToString,
             ),
             'ProcessVideoFrame': grpc.unary_unary_rpc_method_handler(
                     servicer.ProcessVideoFrame,
@@ -132,6 +148,23 @@ class Analytic(object):
         return grpc.experimental.stream_stream(request_iterator, target, '/ace.Analytic/StreamVideoFrame',
             ace_dot_analytic__pb2.InputFrame.SerializeToString,
             ace_dot_analytic__pb2.ProcessedFrame.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ProcessVideoFrameBatch(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ace.Analytic/ProcessVideoFrameBatch',
+            ace_dot_analytic__pb2.ProcessFrameBatchRequest.SerializeToString,
+            ace_dot_analytic__pb2.ProcessedFrameBatch.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

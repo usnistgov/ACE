@@ -1,18 +1,20 @@
-from __future__ import print_function, division, unicode_literals, absolute_import
-import cv2
-import grpc
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
 import logging
 import os
 import sys
 import time
-
-from ace import analytic_pb2, analytic_pb2_grpc
-from ace.analyticservice import AnalyticHandler
-from flask import Flask, jsonify, request, Response
-from ace.rtsp import RTSPHandler
 from concurrent import futures
 
+import cv2
+import grpc
+from flask import Flask, Response, jsonify, request
 from google.protobuf import json_format
+
+from ace import analytic_pb2, analytic_pb2_grpc
+from ace.analytichandler import FrameHandler
+from ace.rtsp import RTSPHandler
 
 logger = logging.getLogger(__name__)
 
@@ -59,8 +61,7 @@ class _AnalyticServicer(analytic_pb2_grpc.AnalyticServicer):
         self.svc = svc
 
     def ProcessVideoFrame(self, req, ctx):
-        handler = AnalyticHandler()
-        handler.from_request(req)
+        handler = FrameHandler.from_request(req)
         handler.set_start_time()
         self.svc._CallEndpoint(self.svc.PROCESS_FRAME, handler, ctx)
         handler.set_end_time()

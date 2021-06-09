@@ -10,7 +10,7 @@ version: "2"
 services:
   # ACE SERVICES
   ace:
-    image: datamachines/nist-ace:0.1
+    image: datamachines/nist-ace:local
     restart: always
     command:
       - "tail" 
@@ -18,70 +18,32 @@ services:
       - "/dev/null"
 
   camera_stream:
-    image: datamachines/nist-ace:0.1
+    image: datamachines/nist-ace:local
     restart: always
     devices: 
       - /dev/video0
     ports:
       - "8554:8554"
+    volumes:
+      - "/home/nick/Workspace/src/gitlab.dsra.io/nist-ace/fire-detection-cnn/models:/videos"
     command:
       - "python3"
       - "-m"
       - "ace"
       - "serve"
       - "rtsp"
-      - "--src=0" 
+      - "--src=/videos/test.mp4" 
       - "--endpoint=test"
 
   object_detector:
-    image: ocv-ssd:0.1
+    image: ocv-ssd:local
     restart: always
     ports:
       - "3000:3000"
     command:    
       - "--verbose"
 
-  object_detector_grpc:
-    image: ocv-ssd:0.1
-    restart: always
-    ports:
-      - "50051:50051"
-    command:
-      - "--verbose"
-      - "--grpc"
-  
-  grpc_analytic_proxy:
-    image: datamachines/nist-ace:0.1
-    restart: always
-    ports:
-      - "3001:3000"
-    command:
-      - python 
-      - -m 
-      - ace 
-      - serve 
-      - proxy 
-      - --analytic_addr 
-      - object_detector_grpc:50051
 
-  # KAFKA SERVICES
-  kafka_zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  kafka_broker:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - kafka_zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: kafka_zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka_broker:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
 # DATABASE AND GRAFANA VISUALIZATION SERVICES
   influxdb:

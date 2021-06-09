@@ -1,15 +1,16 @@
-import cv2
 import argparse
+import logging
+import os
 import threading
 import time
-import os
-import logging
-import numpy as np
 from queue import PriorityQueue
 
+import cv2
+import numpy as np
+
 from ace import analytic_pb2, analytic_pb2_grpc
-from ace.analyticservice import AnalyticService
 from ace.aceclient import AnalyticClient
+from ace.analyticservice import AnalyticService
 from ace.utils import annotate_frame
 
 logger = logging.getLogger(__name__)
