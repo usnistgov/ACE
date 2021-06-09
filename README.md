@@ -344,7 +344,7 @@ ENTRYPOINT ["python3", "my-analytic.py"]
 ## Integrating Other Services with ACE
 ACE provides a standard API for streaming video analytics, but it can leverage 
 existing time-series databases and message queues to process the analytic output 
-data. Currently ACE supports InfluxDB and Kafka, with the analytic wrapper 
+data. Currently ACE supports InfluxDB, NATS, and Kafka, with the analytic wrapper 
 outputing data to the specified services (specified using the configuration API).
 
 #### InfluxDB
@@ -358,10 +358,9 @@ Grafana allows users to create and/or modify dashboards that are relevant to ana
 [Adding data source in Grafana](https://grafana.com/docs/grafana/latest/features/datasources/influxdb/)
 
 
-#### Kafka
+#### Event Streaming
 
-ACE services can be configured to publish results to a Kafka topic. Services can be written to consume 
-analytic results from these topics for use by other programs or for displaying data to a user through a UI or log.
-Kafka is deployed as part of ACE within `Docker-Compose`. Each analytic writes to the Kafka broker with the analytic metadata. This includes:
+ACE services can be configured to publish results to a message queue using event streaming platforms such as Kafka and NATS (support for both is included with the ACE library). Services can be written to consume analytic results from these queues for use by other programs or for displaying data to a user through a UI or log.
+NATS is deployed as part of ACE within `Docker-Compose`. 
 
-For more information regarding Kafka, please refer to the [documentation.](https://kafka.apache.org/documentation/)
+For more information regarding NATS, please refer to the [documentation.](https://nats.io/)
