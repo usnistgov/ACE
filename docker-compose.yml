@@ -10,7 +10,7 @@ version: "2"
 services:
   # ACE SERVICES
   ace:
-    image: datamachines/nist-ace:local
+    image: datamachines/nist-ace:demo
     restart: always
     command:
       - "tail" 
@@ -18,7 +18,7 @@ services:
       - "/dev/null"
 
   camera_stream:
-    image: datamachines/nist-ace:local
+    image: datamachines/nist-ace:demo
     restart: always
     devices: 
       - /dev/video0
@@ -36,7 +36,7 @@ services:
       - "--endpoint=test"
 
   object_detector:
-    image: ocv-ssd:local
+    image: ocv-ssd:demo
     restart: always
     ports:
       - "3000:3000"
