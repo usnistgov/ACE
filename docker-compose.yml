@@ -43,7 +43,11 @@ services:
     command:    
       - "--verbose"
 
-
+  nats_server:
+    image: nats:2.1.9
+    restart: always
+    ports: 
+      - "4222:4222"
 
 # DATABASE AND GRAFANA VISUALIZATION SERVICES
   influxdb:
