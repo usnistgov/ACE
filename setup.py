@@ -35,7 +35,8 @@ setup(name=pkg_name,
           'requests>=2.0.0',
           'flask>=1.0.0',
           'influxdb~=5.2.3',
-          'kafka-python>=2.0.0'
+          'kafka-python>=2.0.0',
+          'asyncio-nats-client'
             ],
         data_files=list(iter_protos(pkg_name)),
         py_modules = [
