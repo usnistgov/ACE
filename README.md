@@ -5,7 +5,9 @@ v1.0
 - [ACE](#ace)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Demo Application](#demo-application)
   - [Quickstart](#quickstart)
+    - [Preset Containers](#preset-containers)
     - [Prerequisites](#prerequisites)
     - [Python Installation](#python-installation)
     - [Example Deployment](#example-deployment)
@@ -23,7 +25,7 @@ v1.0
   - [Integrating Other Services with ACE](#integrating-other-services-with-ace)
       - [InfluxDB](#influxdb)
       - [Grafana](#grafana)
-      - [Kafka](#kafka)
+      - [Event Streaming](#event-streaming)
 
 
 ## Overview
@@ -33,7 +35,7 @@ Institute of Standards and Technology (NIST)
 Division, which provides a modular framework for running containerized analytics on 
 streaming video. As is under active development.
 
-The purpose of the NIST ACE project is to enable the transition of cutting edge analytics to the public safety community. ACE aims to overcome some of the current challenges in transitioning analytics to the public safety community, which include technical challenges such as the lack of standard interfaces between analytics, the prototype nature of analytics (not designed to function as a part of a pipeline or distributed system), and the “black box” nature of analytics. Public safety organizations face other logistical, policy, and resource challenges as well, but our hope is that by addressing the technical challenges and reducing the cost and complexity of deploying analytics over the course of the NIST ACE project, interested organizations will be able to experiment with and utilize analytics in their environments.
+The purpose of the NIST ACE project is to enable easier prototyping of cutting edge analytics to the public safety community. ACE aims to overcome some of the current challenges in prototyping analytics to the public safety community, which include technical challenges such as the lack of standard interfaces between analytics, the experimental nature of analytics (not designed to function as a part of a pipeline or distributed system), and the “black box” nature of analytics. Public safety organizations face other logistical, policy, and resource challenges as well, but our hope is that by addressing the technical challenges and reducing the cost and complexity of deploying analytics over the course of the NIST ACE project, interested organizations will be able to experiment with and utilize analytics in their environments.
 
 Thus far our goal has been to create an open source, modular, analytic microservice framework and toolkit that would serve several purposes: 
 * To provide analytic researchers and developers with tools and libraries to easily turn their analytics into ACE microservices, allowing them to more easily incorporate their analytics into ACE-based systems, as well as providing them with a means of easily testing their analytics.
@@ -49,8 +51,13 @@ ACE provides a suite of tools which can be used to construct analytic workflows 
 * A command-line interface (CLI), based on the client library, which can be used to talk to analytic microservices and other system components. The CLI can also be used to start up special containerized analytic tools called “StreamFilters”, which can be configured to modify stream parameters (such as applying additional compression, changing the resolution, or degrading the stream in other ways). These analytics expose a unique API, which allows these parameters to be altered in real-time.
 * Dockerfile
 
+## Demo Application
+A demo application using ACE is available [here](https://github.com/usnistgov/ace-ui). This demo application uses a web-based UI to configure analytics and display detections and alerts to the user. In order to use the demo application you will need to build the ACE containers (run the `build.sh` script).
 
 ## Quickstart
+
+### Preset Containers
+To build the ACE base containers and analytic containers, run the `build.sh` script. This will build local ACE containers tagged as `datamachines/nist-ace:demo`.
 
 ### Prerequisites
 ACE is a microservice framework whose components are designed to run as containerized microservices, ideally managed by an orchestration layer such as Kubernetes, Docker Swarm, or Docker Compose. 
@@ -92,7 +99,6 @@ An example `docker-compose` file is included in the repository which provides a 
  * `camera_stream`: A service which (if running on a linux machine) will create an RTSP stream using your webcam. It is commented out by default. Uncomment the section in the `docker-compose.yml` file in order to create the stream.
  * `object_detector`: An object detector using OpenCV's DNN object detector API and using the  ssd_mobilenet_v2 model trained on the COCO dataset.
  * `ace`: A utility container that has the ACE library installed and is not running any services. It's purpose is to allow you to exec into the container in order run ACE commands from within the docker-compose environment.
- * `kafka_zookeeper` and `kafka_broker`: These are Kafka services which allow the analytics to publish messages to Kafka topics.
  * `influxdb`: A time series database which can be used to store analytic results.
  * `grafana`: Browser-based UI used to visualize analytic results stored in the database.
 
