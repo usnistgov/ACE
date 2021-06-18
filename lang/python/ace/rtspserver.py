@@ -1,19 +1,20 @@
 
-from gi.repository import Gst, GstRtspServer, GObject
-import cv2
 import argparse
-
+import logging
+import os
+import signal
 import threading
 import time
-import os
-import logging
-import numpy as np
-import signal
 from queue import PriorityQueue
+
+import cv2
+import gi
+import numpy as np
+from gi.repository import GObject, Gst, GstRtspServer
 
 from ace import analytic_pb2, analytic_pb2_grpc
 from ace.utils import annotate_frame
-import gi
+
 gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 

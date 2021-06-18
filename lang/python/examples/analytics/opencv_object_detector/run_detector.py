@@ -1,15 +1,17 @@
 import argparse
-import cv2
-import numpy as np
 import json
 import os
 import sys
 import time
 
-from ace import analyticservice, analytic_pb2, grpcservice
+import cv2
+import numpy as np
+
+from ace import analytic_pb2, analyticservice, grpcservice
+
 
 def detect(handler):
-    # print("Processing frame!!")
+    print("Processing frame!!")
     frame = handler.get_frame()
 
     img_ht, img_width, _ = frame.shape

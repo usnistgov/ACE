@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12\x61\x63\x65/analytic.proto\x12\x03\x61\x63\x65\x1a\x17google/rpc/status.proto\"\x1d\n\x05Point\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"\xa3\x01\n\x10RegionOfInterest\x12\x1f\n\x03\x62ox\x18\x01 \x01(\x0b\x32\x10.ace.BoundingBoxH\x00\x12\x1e\n\x04mask\x18\x02 \x01(\x0b\x32\x0e.ace.PixelMaskH\x00\x12\x16\n\x0e\x63lassification\x18\x05 \x01(\t\x12\x12\n\nconfidence\x18\x03 \x01(\x02\x12\x12\n\nsupplement\x18\x04 \x01(\tB\x0e\n\x0clocalization\"&\n\tPixelMask\x12\x19\n\x05pixel\x18\x01 \x03(\x0b\x32\n.ace.Point\"G\n\x0b\x42oundingBox\x12\x1b\n\x07\x63orner1\x18\x01 \x01(\x0b\x32\n.ace.Point\x12\x1b\n\x07\x63orner2\x18\x02 \x01(\x0b\x32\n.ace.Point\"B\n\x05\x46rame\x12\x0b\n\x03img\x18\x01 \x01(\x0c\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12\r\n\x05\x63olor\x18\x04 \x01(\x05\"f\n\nInputFrame\x12\x19\n\x05\x66rame\x18\x01 \x01(\x0b\x32\n.ace.Frame\x12\x11\n\tframe_num\x18\x02 \x01(\x03\x12\x11\n\ttimestamp\x18\x03 \x01(\x02\x12\x17\n\x0f\x66rame_byte_size\x18\x04 \x01(\x03\"n\n\x13ProcessFrameRequest\x12\x1e\n\x05\x66rame\x18\x01 \x01(\x0b\x32\x0f.ace.InputFrame\x12#\n\x08\x61nalytic\x18\x02 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x12\n\nsession_id\x18\x03 \x01(\t\"\x8c\x02\n\tFrameData\x12\"\n\x03roi\x18\x01 \x03(\x0b\x32\x15.ace.RegionOfInterest\x12\x19\n\x11start_time_millis\x18\x03 \x01(\x03\x12\x17\n\x0f\x65nd_time_millis\x18\x04 \x01(\x03\x12\"\n\x06status\x18\x05 \x01(\x0b\x32\x12.google.rpc.Status\x12\x13\n\x0bstream_addr\x18\x06 \x01(\t\x12&\n\x04tags\x18\x07 \x03(\x0b\x32\x18.ace.FrameData.TagsEntry\x12\x19\n\x11supplemental_data\x18\x08 \x01(\t\x1a+\n\tTagsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"4\n\x0c\x46rameRequest\x12$\n\tanalytics\x18\x01 \x03(\x0b\x32\x11.ace.AnalyticData\"\xcc\x01\n\x0c\x41nalyticData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x61\x64\x64r\x18\x02 \x01(\t\x12\x14\n\x0crequires_gpu\x18\x03 \x01(\x08\x12\x12\n\noperations\x18\x04 \x03(\t\x12/\n\x07\x66ilters\x18\x05 \x03(\x0b\x32\x1e.ace.AnalyticData.FiltersEntry\x12\x15\n\rreplica_addrs\x18\x06 \x03(\t\x1a.\n\x0c\x46iltersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"8\n\x10\x43ompositeResults\x12$\n\x07results\x18\x01 \x03(\x0b\x32\x13.ace.ProcessedFrame\"\x87\x01\n\x0eProcessedFrame\x12\x1e\n\x05\x66rame\x18\x01 \x01(\x0b\x32\x0f.ace.InputFrame\x12\x1c\n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x0e.ace.FrameData\x12#\n\x08\x61nalytic\x18\x03 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x12\n\nsession_id\x18\x04 \x01(\t\"\x07\n\x05\x45mpty\" \n\x0e\x41nalyticStatus\x12\x0e\n\x06status\x18\x01 \x01(\t\"4\n\x0cOutputParams\x12\x13\n\x0bstream_addr\x18\x01 \x01(\t\x12\x0f\n\x07\x64\x62_addr\x18\x02 \x01(\t\"\xb1\x02\n\rStreamRequest\x12\x15\n\rstream_source\x18\x01 \x01(\t\x12#\n\x08\x61nalytic\x18\x02 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x14\n\x0creturn_frame\x18\x03 \x01(\x08\x12\x13\n\x0b\x66rame_width\x18\x04 \x01(\x05\x12\x14\n\x0c\x66rame_height\x18\x05 \x01(\x05\x12\x12\n\nkafka_addr\x18\x06 \x01(\t\x12\x0f\n\x07\x64\x62_addr\x18\x07 \x01(\t\x12\x12\n\nsession_id\x18\x08 \x01(\t\x12\x37\n\x0bsystem_tags\x18\t \x03(\x0b\x32\".ace.StreamRequest.SystemTagsEntry\x1a\x31\n\x0fSystemTagsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xb4\x02\n\x08\x41nalytic\x12<\n\x10StreamVideoFrame\x12\x0f.ace.InputFrame\x1a\x13.ace.ProcessedFrame(\x01\x30\x01\x12\x42\n\x11ProcessVideoFrame\x12\x18.ace.ProcessFrameRequest\x1a\x13.ace.ProcessedFrame\x12@\n\x11\x43onfigVideoStream\x12\x12.ace.StreamRequest\x1a\x13.ace.ProcessedFrame(\x01\x30\x01\x12\x34\n\x08GetFrame\x12\x11.ace.FrameRequest\x1a\x15.ace.CompositeResults\x12.\n\x0b\x43heckStatus\x12\n.ace.Empty\x1a\x13.ace.AnalyticStatusb\x06proto3'
+  serialized_pb=b'\n\x12\x61\x63\x65/analytic.proto\x12\x03\x61\x63\x65\x1a\x17google/rpc/status.proto\"\x1d\n\x05Point\x12\t\n\x01x\x18\x01 \x01(\x05\x12\t\n\x01y\x18\x02 \x01(\x05\"\xa3\x01\n\x10RegionOfInterest\x12\x1f\n\x03\x62ox\x18\x01 \x01(\x0b\x32\x10.ace.BoundingBoxH\x00\x12\x1e\n\x04mask\x18\x02 \x01(\x0b\x32\x0e.ace.PixelMaskH\x00\x12\x16\n\x0e\x63lassification\x18\x05 \x01(\t\x12\x12\n\nconfidence\x18\x03 \x01(\x02\x12\x12\n\nsupplement\x18\x04 \x01(\tB\x0e\n\x0clocalization\"&\n\tPixelMask\x12\x19\n\x05pixel\x18\x01 \x03(\x0b\x32\n.ace.Point\"G\n\x0b\x42oundingBox\x12\x1b\n\x07\x63orner1\x18\x01 \x01(\x0b\x32\n.ace.Point\x12\x1b\n\x07\x63orner2\x18\x02 \x01(\x0b\x32\n.ace.Point\"B\n\x05\x46rame\x12\x0b\n\x03img\x18\x01 \x01(\x0c\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12\r\n\x05\x63olor\x18\x04 \x01(\x05\"f\n\nInputFrame\x12\x19\n\x05\x66rame\x18\x01 \x01(\x0b\x32\n.ace.Frame\x12\x11\n\tframe_num\x18\x02 \x01(\x03\x12\x11\n\ttimestamp\x18\x03 \x01(\x02\x12\x17\n\x0f\x66rame_byte_size\x18\x04 \x01(\x03\"n\n\x13ProcessFrameRequest\x12\x1e\n\x05\x66rame\x18\x01 \x01(\x0b\x32\x0f.ace.InputFrame\x12#\n\x08\x61nalytic\x18\x02 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x12\n\nsession_id\x18\x03 \x01(\t\"s\n\x18ProcessFrameBatchRequest\x12\x1e\n\x05\x66rame\x18\x01 \x03(\x0b\x32\x0f.ace.InputFrame\x12#\n\x08\x61nalytic\x18\x02 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x12\n\nsession_id\x18\x03 \x01(\t\"\x8c\x02\n\tFrameData\x12\"\n\x03roi\x18\x01 \x03(\x0b\x32\x15.ace.RegionOfInterest\x12\x19\n\x11start_time_millis\x18\x03 \x01(\x03\x12\x17\n\x0f\x65nd_time_millis\x18\x04 \x01(\x03\x12\"\n\x06status\x18\x05 \x01(\x0b\x32\x12.google.rpc.Status\x12\x13\n\x0bstream_addr\x18\x06 \x01(\t\x12&\n\x04tags\x18\x07 \x03(\x0b\x32\x18.ace.FrameData.TagsEntry\x12\x19\n\x11supplemental_data\x18\x08 \x01(\t\x1a+\n\tTagsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"4\n\x0c\x46rameRequest\x12$\n\tanalytics\x18\x01 \x03(\x0b\x32\x11.ace.AnalyticData\"\xcc\x01\n\x0c\x41nalyticData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x61\x64\x64r\x18\x02 \x01(\t\x12\x14\n\x0crequires_gpu\x18\x03 \x01(\x08\x12\x12\n\noperations\x18\x04 \x03(\t\x12/\n\x07\x66ilters\x18\x05 \x03(\x0b\x32\x1e.ace.AnalyticData.FiltersEntry\x12\x15\n\rreplica_addrs\x18\x06 \x03(\t\x1a.\n\x0c\x46iltersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"8\n\x10\x43ompositeResults\x12$\n\x07results\x18\x01 \x03(\x0b\x32\x13.ace.ProcessedFrame\"\x87\x01\n\x0eProcessedFrame\x12\x1e\n\x05\x66rame\x18\x01 \x01(\x0b\x32\x0f.ace.InputFrame\x12\x1c\n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x0e.ace.FrameData\x12#\n\x08\x61nalytic\x18\x03 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x12\n\nsession_id\x18\x04 \x01(\t\"D\n\x13ProcessedFrameBatch\x12-\n\x10processed_frames\x18\x01 \x03(\x0b\x32\x13.ace.ProcessedFrame\"\x07\n\x05\x45mpty\" \n\x0e\x41nalyticStatus\x12\x0e\n\x06status\x18\x01 \x01(\t\"4\n\x0cOutputParams\x12\x13\n\x0bstream_addr\x18\x01 \x01(\t\x12\x0f\n\x07\x64\x62_addr\x18\x02 \x01(\t\"\xc8\x02\n\rStreamRequest\x12\x15\n\rstream_source\x18\x01 \x01(\t\x12\x11\n\tstream_id\x18\n \x01(\t\x12#\n\x08\x61nalytic\x18\x02 \x01(\x0b\x32\x11.ace.AnalyticData\x12\x14\n\x0creturn_frame\x18\x03 \x01(\x08\x12\x13\n\x0b\x66rame_width\x18\x04 \x01(\x05\x12\x14\n\x0c\x66rame_height\x18\x05 \x01(\x05\x12\x16\n\x0emessenger_addr\x18\x06 \x01(\t\x12\x0f\n\x07\x64\x62_addr\x18\x07 \x01(\t\x12\x12\n\nsession_id\x18\x08 \x01(\t\x12\x37\n\x0bsystem_tags\x18\t \x03(\x0b\x32\".ace.StreamRequest.SystemTagsEntry\x1a\x31\n\x0fSystemTagsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\x87\x03\n\x08\x41nalytic\x12<\n\x10StreamVideoFrame\x12\x0f.ace.InputFrame\x1a\x13.ace.ProcessedFrame(\x01\x30\x01\x12Q\n\x16ProcessVideoFrameBatch\x12\x1d.ace.ProcessFrameBatchRequest\x1a\x18.ace.ProcessedFrameBatch\x12\x42\n\x11ProcessVideoFrame\x12\x18.ace.ProcessFrameRequest\x1a\x13.ace.ProcessedFrame\x12@\n\x11\x43onfigVideoStream\x12\x12.ace.StreamRequest\x1a\x13.ace.ProcessedFrame(\x01\x30\x01\x12\x34\n\x08GetFrame\x12\x11.ace.FrameRequest\x1a\x15.ace.CompositeResults\x12.\n\x0b\x43heckStatus\x12\n.ace.Empty\x1a\x13.ace.AnalyticStatusb\x06proto3'
   ,
   dependencies=[google_dot_rpc_dot_status__pb2.DESCRIPTOR,])
 
@@ -354,6 +354,52 @@ _PROCESSFRAMEREQUEST = _descriptor.Descriptor(
 )
 
 
+_PROCESSFRAMEBATCHREQUEST = _descriptor.Descriptor(
+  name='ProcessFrameBatchRequest',
+  full_name='ace.ProcessFrameBatchRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='frame', full_name='ace.ProcessFrameBatchRequest.frame', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='analytic', full_name='ace.ProcessFrameBatchRequest.analytic', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='session_id', full_name='ace.ProcessFrameBatchRequest.session_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=646,
+  serialized_end=761,
+)
+
+
 _FRAMEDATA_TAGSENTRY = _descriptor.Descriptor(
   name='TagsEntry',
   full_name='ace.FrameData.TagsEntry',
@@ -388,8 +434,8 @@ _FRAMEDATA_TAGSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=872,
-  serialized_end=915,
+  serialized_start=989,
+  serialized_end=1032,
 )
 
 _FRAMEDATA = _descriptor.Descriptor(
@@ -461,8 +507,8 @@ _FRAMEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=647,
-  serialized_end=915,
+  serialized_start=764,
+  serialized_end=1032,
 )
 
 
@@ -493,8 +539,8 @@ _FRAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=917,
-  serialized_end=969,
+  serialized_start=1034,
+  serialized_end=1086,
 )
 
 
@@ -532,8 +578,8 @@ _ANALYTICDATA_FILTERSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1130,
-  serialized_end=1176,
+  serialized_start=1247,
+  serialized_end=1293,
 )
 
 _ANALYTICDATA = _descriptor.Descriptor(
@@ -598,8 +644,8 @@ _ANALYTICDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1176,
+  serialized_start=1089,
+  serialized_end=1293,
 )
 
 
@@ -630,8 +676,8 @@ _COMPOSITERESULTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1178,
-  serialized_end=1234,
+  serialized_start=1295,
+  serialized_end=1351,
 )
 
 
@@ -683,8 +729,40 @@ _PROCESSEDFRAME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1237,
-  serialized_end=1372,
+  serialized_start=1354,
+  serialized_end=1489,
+)
+
+
+_PROCESSEDFRAMEBATCH = _descriptor.Descriptor(
+  name='ProcessedFrameBatch',
+  full_name='ace.ProcessedFrameBatch',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='processed_frames', full_name='ace.ProcessedFrameBatch.processed_frames', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1491,
+  serialized_end=1559,
 )
 
 
@@ -708,8 +786,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1374,
-  serialized_end=1381,
+  serialized_start=1561,
+  serialized_end=1568,
 )
 
 
@@ -740,8 +818,8 @@ _ANALYTICSTATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1383,
-  serialized_end=1415,
+  serialized_start=1570,
+  serialized_end=1602,
 )
 
 
@@ -779,8 +857,8 @@ _OUTPUTPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1417,
-  serialized_end=1469,
+  serialized_start=1604,
+  serialized_end=1656,
 )
 
 
@@ -818,8 +896,8 @@ _STREAMREQUEST_SYSTEMTAGSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1728,
-  serialized_end=1777,
+  serialized_start=1938,
+  serialized_end=1987,
 )
 
 _STREAMREQUEST = _descriptor.Descriptor(
@@ -838,56 +916,63 @@ _STREAMREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='analytic', full_name='ace.StreamRequest.analytic', index=1,
+      name='stream_id', full_name='ace.StreamRequest.stream_id', index=1,
+      number=10, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='analytic', full_name='ace.StreamRequest.analytic', index=2,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='return_frame', full_name='ace.StreamRequest.return_frame', index=2,
+      name='return_frame', full_name='ace.StreamRequest.return_frame', index=3,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='frame_width', full_name='ace.StreamRequest.frame_width', index=3,
+      name='frame_width', full_name='ace.StreamRequest.frame_width', index=4,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='frame_height', full_name='ace.StreamRequest.frame_height', index=4,
+      name='frame_height', full_name='ace.StreamRequest.frame_height', index=5,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='kafka_addr', full_name='ace.StreamRequest.kafka_addr', index=5,
+      name='messenger_addr', full_name='ace.StreamRequest.messenger_addr', index=6,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='db_addr', full_name='ace.StreamRequest.db_addr', index=6,
+      name='db_addr', full_name='ace.StreamRequest.db_addr', index=7,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='session_id', full_name='ace.StreamRequest.session_id', index=7,
+      name='session_id', full_name='ace.StreamRequest.session_id', index=8,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='system_tags', full_name='ace.StreamRequest.system_tags', index=8,
+      name='system_tags', full_name='ace.StreamRequest.system_tags', index=9,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -905,8 +990,8 @@ _STREAMREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1472,
-  serialized_end=1777,
+  serialized_start=1659,
+  serialized_end=1987,
 )
 
 _REGIONOFINTEREST.fields_by_name['box'].message_type = _BOUNDINGBOX
@@ -923,6 +1008,8 @@ _BOUNDINGBOX.fields_by_name['corner2'].message_type = _POINT
 _INPUTFRAME.fields_by_name['frame'].message_type = _FRAME
 _PROCESSFRAMEREQUEST.fields_by_name['frame'].message_type = _INPUTFRAME
 _PROCESSFRAMEREQUEST.fields_by_name['analytic'].message_type = _ANALYTICDATA
+_PROCESSFRAMEBATCHREQUEST.fields_by_name['frame'].message_type = _INPUTFRAME
+_PROCESSFRAMEBATCHREQUEST.fields_by_name['analytic'].message_type = _ANALYTICDATA
 _FRAMEDATA_TAGSENTRY.containing_type = _FRAMEDATA
 _FRAMEDATA.fields_by_name['roi'].message_type = _REGIONOFINTEREST
 _FRAMEDATA.fields_by_name['status'].message_type = google_dot_rpc_dot_status__pb2._STATUS
@@ -934,6 +1021,7 @@ _COMPOSITERESULTS.fields_by_name['results'].message_type = _PROCESSEDFRAME
 _PROCESSEDFRAME.fields_by_name['frame'].message_type = _INPUTFRAME
 _PROCESSEDFRAME.fields_by_name['data'].message_type = _FRAMEDATA
 _PROCESSEDFRAME.fields_by_name['analytic'].message_type = _ANALYTICDATA
+_PROCESSEDFRAMEBATCH.fields_by_name['processed_frames'].message_type = _PROCESSEDFRAME
 _STREAMREQUEST_SYSTEMTAGSENTRY.containing_type = _STREAMREQUEST
 _STREAMREQUEST.fields_by_name['analytic'].message_type = _ANALYTICDATA
 _STREAMREQUEST.fields_by_name['system_tags'].message_type = _STREAMREQUEST_SYSTEMTAGSENTRY
@@ -944,11 +1032,13 @@ DESCRIPTOR.message_types_by_name['BoundingBox'] = _BOUNDINGBOX
 DESCRIPTOR.message_types_by_name['Frame'] = _FRAME
 DESCRIPTOR.message_types_by_name['InputFrame'] = _INPUTFRAME
 DESCRIPTOR.message_types_by_name['ProcessFrameRequest'] = _PROCESSFRAMEREQUEST
+DESCRIPTOR.message_types_by_name['ProcessFrameBatchRequest'] = _PROCESSFRAMEBATCHREQUEST
 DESCRIPTOR.message_types_by_name['FrameData'] = _FRAMEDATA
 DESCRIPTOR.message_types_by_name['FrameRequest'] = _FRAMEREQUEST
 DESCRIPTOR.message_types_by_name['AnalyticData'] = _ANALYTICDATA
 DESCRIPTOR.message_types_by_name['CompositeResults'] = _COMPOSITERESULTS
 DESCRIPTOR.message_types_by_name['ProcessedFrame'] = _PROCESSEDFRAME
+DESCRIPTOR.message_types_by_name['ProcessedFrameBatch'] = _PROCESSEDFRAMEBATCH
 DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 DESCRIPTOR.message_types_by_name['AnalyticStatus'] = _ANALYTICSTATUS
 DESCRIPTOR.message_types_by_name['OutputParams'] = _OUTPUTPARAMS
@@ -1004,6 +1094,13 @@ ProcessFrameRequest = _reflection.GeneratedProtocolMessageType('ProcessFrameRequ
   })
 _sym_db.RegisterMessage(ProcessFrameRequest)
 
+ProcessFrameBatchRequest = _reflection.GeneratedProtocolMessageType('ProcessFrameBatchRequest', (_message.Message,), {
+  'DESCRIPTOR' : _PROCESSFRAMEBATCHREQUEST,
+  '__module__' : 'ace.analytic_pb2'
+  # @@protoc_insertion_point(class_scope:ace.ProcessFrameBatchRequest)
+  })
+_sym_db.RegisterMessage(ProcessFrameBatchRequest)
+
 FrameData = _reflection.GeneratedProtocolMessageType('FrameData', (_message.Message,), {
 
   'TagsEntry' : _reflection.GeneratedProtocolMessageType('TagsEntry', (_message.Message,), {
@@ -1055,6 +1152,13 @@ ProcessedFrame = _reflection.GeneratedProtocolMessageType('ProcessedFrame', (_me
   })
 _sym_db.RegisterMessage(ProcessedFrame)
 
+ProcessedFrameBatch = _reflection.GeneratedProtocolMessageType('ProcessedFrameBatch', (_message.Message,), {
+  'DESCRIPTOR' : _PROCESSEDFRAMEBATCH,
+  '__module__' : 'ace.analytic_pb2'
+  # @@protoc_insertion_point(class_scope:ace.ProcessedFrameBatch)
+  })
+_sym_db.RegisterMessage(ProcessedFrameBatch)
+
 Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   'DESCRIPTOR' : _EMPTY,
   '__module__' : 'ace.analytic_pb2'
@@ -1103,8 +1207,8 @@ _ANALYTIC = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1780,
-  serialized_end=2088,
+  serialized_start=1990,
+  serialized_end=2381,
   methods=[
   _descriptor.MethodDescriptor(
     name='StreamVideoFrame',
@@ -1117,9 +1221,19 @@ _ANALYTIC = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='ProcessVideoFrameBatch',
+    full_name='ace.Analytic.ProcessVideoFrameBatch',
+    index=1,
+    containing_service=None,
+    input_type=_PROCESSFRAMEBATCHREQUEST,
+    output_type=_PROCESSEDFRAMEBATCH,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='ProcessVideoFrame',
     full_name='ace.Analytic.ProcessVideoFrame',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_PROCESSFRAMEREQUEST,
     output_type=_PROCESSEDFRAME,
@@ -1129,7 +1243,7 @@ _ANALYTIC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ConfigVideoStream',
     full_name='ace.Analytic.ConfigVideoStream',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_STREAMREQUEST,
     output_type=_PROCESSEDFRAME,
@@ -1139,7 +1253,7 @@ _ANALYTIC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetFrame',
     full_name='ace.Analytic.GetFrame',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_FRAMEREQUEST,
     output_type=_COMPOSITERESULTS,
@@ -1149,7 +1263,7 @@ _ANALYTIC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='CheckStatus',
     full_name='ace.Analytic.CheckStatus',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_EMPTY,
     output_type=_ANALYTICSTATUS,

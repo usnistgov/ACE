@@ -1,13 +1,13 @@
 import argparse
-import cv2
 import json
 import logging
 import os
 import sys
 
+import cv2
 import numpy as np
 
-from ace import analyticservice, analytic_pb2, grpcservice
+from ace import analytic_pb2, analyticservice, grpcservice
 
 
 def detect(handler):

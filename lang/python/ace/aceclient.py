@@ -1,18 +1,19 @@
 #!/bin/python3
 # import ansyncio
-import cv2
-import grpc
-import click
 import logging
 import os.path
-import requests
 import sys
-import time
 import threading
+import time
 import uuid
 
-from influxdb import InfluxDBClient
+import click
+import cv2
+import grpc
+import requests
 from google.protobuf import json_format
+from influxdb import InfluxDBClient
+
 from ace import analytic_pb2, analytic_pb2_grpc
 
 logger = logging.getLogger(__name__)
@@ -21,23 +22,21 @@ class ConfigClient:
     def __init__(self, host="localhost", port="3000"):
         self.addr = "http://{!s}:{!s}".format(host, port)
 
-    def config(self, src, analytic=None, return_frame=False, frame_width=None, frame_height=None, kafka_addr=None, db_addr=None, tags=None):
+    def config(self, src, analytic=None, frame_width=None, frame_height=None, messenger_addr=None, db_addr=None, tags=None, stream_id=None, return_frame=False):
         """Configure the analytic to process the stream at the address specified by 'src'"""
         req = analytic_pb2.StreamRequest()
         req.stream_source = src
         # req.kafka_addr = "broker:9092"
         if analytic:
             req.analytic.MergeFrom(analytic)
-        if return_frame:
-            req.return_frame = return_frame
-        if frame_width:
-            req.frame_width = frame_width
-        if frame_height:
-            req.frame_height = frame_height
-        if kafka_addr:
-            req.kafka_addr = kafka_addr
-        if db_addr:
-            req.db_addr = db_addr
+        
+        req.return_frame = return_frame
+        req.frame_width = frame_width or 0
+        req.frame_height = frame_height or 0
+        req.messenger_addr = messenger_addr or ""
+        req.db_addr = db_addr or ""
+        req.stream_id = stream_id or "default"
+        req.return_frame = return_frame
         if tags:
             logger.debug("Adding tags")
             for key, value in tags.items():

@@ -1,4 +1,4 @@
-FROM datamachines/nist-ace:0.1
+FROM datamachines/nist-ace:demo
 
 ENV DEBIAN_FRONTEND noninteractive
 

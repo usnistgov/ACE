@@ -1,11 +1,13 @@
 # ACE
-v1.0
+v1.1
 
 ## Table of Contents
 - [ACE](#ace)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Demo Application](#demo-application)
   - [Quickstart](#quickstart)
+    - [Preset Containers](#preset-containers)
     - [Prerequisites](#prerequisites)
     - [Python Installation](#python-installation)
     - [Example Deployment](#example-deployment)
@@ -23,7 +25,7 @@ v1.0
   - [Integrating Other Services with ACE](#integrating-other-services-with-ace)
       - [InfluxDB](#influxdb)
       - [Grafana](#grafana)
-      - [Kafka](#kafka)
+      - [Event Streaming](#event-streaming)
 
 
 ## Overview
@@ -49,8 +51,13 @@ ACE provides a suite of tools which can be used to construct analytic workflows 
 * A command-line interface (CLI), based on the client library, which can be used to talk to analytic microservices and other system components. The CLI can also be used to start up special containerized analytic tools called “StreamFilters”, which can be configured to modify stream parameters (such as applying additional compression, changing the resolution, or degrading the stream in other ways). These analytics expose a unique API, which allows these parameters to be altered in real-time.
 * Dockerfile
 
+## Demo Application
+A demo application using ACE is available [here](https://github.com/usnistgov/ace-ui). This demo application uses a web-based UI to configure analytics and display detections and alerts to the user. In order to use the demo application you will need to build the ACE containers (run the `build.sh` script).
 
 ## Quickstart
+
+### Preset Containers
+To build the ACE base containers and analytic containers, run the `build.sh` script. This will build local ACE containers tagged as `datamachines/nist-ace:demo`.
 
 ### Prerequisites
 ACE is a microservice framework whose components are designed to run as containerized microservices, ideally managed by an orchestration layer such as Kubernetes, Docker Swarm, or Docker Compose. 
@@ -92,7 +99,6 @@ An example `docker-compose` file is included in the repository which provides a 
  * `camera_stream`: A service which (if running on a linux machine) will create an RTSP stream using your webcam. It is commented out by default. Uncomment the section in the `docker-compose.yml` file in order to create the stream.
  * `object_detector`: An object detector using OpenCV's DNN object detector API and using the  ssd_mobilenet_v2 model trained on the COCO dataset.
  * `ace`: A utility container that has the ACE library installed and is not running any services. It's purpose is to allow you to exec into the container in order run ACE commands from within the docker-compose environment.
- * `kafka_zookeeper` and `kafka_broker`: These are Kafka services which allow the analytics to publish messages to Kafka topics.
  * `influxdb`: A time series database which can be used to store analytic results.
  * `grafana`: Browser-based UI used to visualize analytic results stored in the database.
 
@@ -344,7 +350,7 @@ ENTRYPOINT ["python3", "my-analytic.py"]
 ## Integrating Other Services with ACE
 ACE provides a standard API for streaming video analytics, but it can leverage 
 existing time-series databases and message queues to process the analytic output 
-data. Currently ACE supports InfluxDB and Kafka, with the analytic wrapper 
+data. Currently ACE supports InfluxDB, NATS, and Kafka, with the analytic wrapper 
 outputing data to the specified services (specified using the configuration API).
 
 #### InfluxDB
@@ -358,10 +364,13 @@ Grafana allows users to create and/or modify dashboards that are relevant to ana
 [Adding data source in Grafana](https://grafana.com/docs/grafana/latest/features/datasources/influxdb/)
 
 
-#### Kafka
+#### Event Streaming
 
-ACE services can be configured to publish results to a Kafka topic. Services can be written to consume 
-analytic results from these topics for use by other programs or for displaying data to a user through a UI or log.
-Kafka is deployed as part of ACE within `Docker-Compose`. Each analytic writes to the Kafka broker with the analytic metadata. This includes:
+ACE services can be configured to publish results to a message queue using event streaming platforms such as Kafka and NATS (support for both is included with the ACE library). Services can be written to consume analytic results from these queues for use by other programs or for displaying data to a user through a UI or log.
+NATS is deployed as part of ACE within `Docker-Compose`. 
 
+<<<<<<< HEAD
 For more information regarding Kafka, please refer to the [documentation.](https://kafka.apache.org/documentation/)
+=======
+For more information regarding NATS, please refer to the [documentation.](https://nats.io/)
+>>>>>>> feature/demo
