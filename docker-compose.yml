@@ -17,23 +17,21 @@ services:
       - "-f" 
       - "/dev/null"
 
-  camera_stream:
-    image: datamachines/nist-ace:demo
-    restart: always
-    devices: 
-      - /dev/video0
-    ports:
-      - "8554:8554"
-    volumes:
-      - "/home/nick/Workspace/src/gitlab.dsra.io/nist-ace/fire-detection-cnn/models:/videos"
-    command:
-      - "python3"
-      - "-m"
-      - "ace"
-      - "serve"
-      - "rtsp"
-      - "--src=/videos/test.mp4" 
-      - "--endpoint=test"
+#  camera_stream:
+#    image: datamachines/nist-ace:demo
+#    restart: always
+#    devices: 
+#      - /dev/video0
+#    ports:
+#      - "8554:8554"
+#    command:
+#      - "python3"
+#      - "-m"
+#      - "ace"
+#      - "serve"
+#      - "rtsp"
+#      - "--src=0" 
+#      - "--endpoint=test"
 
   object_detector:
     image: ocv-ssd:demo
