@@ -25,7 +25,7 @@ setup(name=pkg_name,
         packages=["ace"],
         install_requires=[
           'setuptools>=41.0.0',
-          'grpcio>=1.24.3',
+          'grpcio>=1.24.3, ==1.34.0', # required by TF 2.5.1
           'grpcio_health_checking>=1.15.0',
           'protobuf>=3.6.1',
           'googleapis-common-protos>=1.6.0',
