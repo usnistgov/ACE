@@ -57,7 +57,11 @@ A demo application using ACE is available [here](https://github.com/usnistgov/ac
 ## Quickstart
 
 ### Preset Containers
-To build the ACE base containers and analytic containers, run the `build.sh` script. This will build local ACE containers tagged as `datamachines/nist-ace:demo`.
+
+To build the ACE base container (for Linux and MacOS), run `make nist-ace_demo`. This will build local ACE containers tagged as `datamachines/nist-ace:demo`.
+
+Building the "extra" containers (`make nist-ace_extra`) will also build some analytics container, but those are Linux specific.
+
 
 ### Prerequisites
 ACE is a microservice framework whose components are designed to run as containerized microservices, ideally managed by an orchestration layer such as Kubernetes, Docker Swarm, or Docker Compose. 
@@ -105,9 +109,9 @@ An example `docker-compose` file is included in the repository which provides a 
 ACE supports GPU accelerated computing, and the base container comes with all the necessary utilities (CUDA_DNN, Tensorflow, OpenCV with FFMPEG and Gstreamer). For compatibility purposes and ease of testing, the example deployment provided *_does not_* require a GPU in order to run.
 
 To use this deployment you will need to build the ACE and object detector containers as well as create two docker volumes. 
-* You can run the `build.sh` script to build the containers used in the docker-compose deployment
+* You can use the `Makefile` to build the containers used in the docker-compose deployment
   ```bash
-  $ bash build.sh
+  $ make nist-ace_extra
   ```
 * The necessary volumes can be built with the following commands
   ```bash
