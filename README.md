@@ -58,9 +58,13 @@ A demo application using ACE is available [here](https://github.com/usnistgov/ac
 
 ### Preset Containers
 
-To build the ACE base container (for Linux and MacOS), run `make nist-ace_demo`. This will build local ACE containers tagged as `datamachines/nist-ace:demo`.
+To build the ACE base container for a Linux system with an Nvidia GPU, use the `GPU` section targets of the `Makefile`, here `make gpu_nist-ace_demo`.
 
-Building the "extra" containers (`make nist-ace_extra`) will also build some analytics container, but those are Linux specific.
+To build for MacOS or a Linux system without a GPU, use the `CPU` target: `make cpu_nist-ace_demo`.
+
+Both GPU and CPU options will build local ACE containers tagged as `datamachines/nist-ace:demo`.
+
+Building the "extra" containers will also build some analytics containers.
 
 
 ### Prerequisites
