@@ -31,9 +31,6 @@ nist-ace_demo:
 
 nist-ace_extra:
 	@make build_prep
-	cd lang/python/examples/analytics/opencv_object_detector
-	docker build ${ACE_NOCACHE} -t ocv-ssd:demo .
-	cd ../test_analytic
-	docker build ${ACE_NOCACHE} -t ace-test-analytic:demo .
-	cd ../activity-recognition
-	docker build ${ACE_NOCACHE} -t act-recognition:demo .
+	cd lang/python/examples/analytics/opencv_object_detector && docker build ${ACE_NOCACHE} -t ocv-ssd:demo .
+	cd lang/python/examples/analytics/test_analytic && docker build ${ACE_NOCACHE} -t ace-test-analytic:demo .
+	cd lang/python/examples/analytics/activity_recognition && docker build ${ACE_NOCACHE} -t act-recognition:demo .
