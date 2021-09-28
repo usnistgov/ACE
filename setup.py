@@ -25,8 +25,8 @@ setup(name=pkg_name,
         packages=["ace"],
         install_requires=[
           'setuptools>=41.0.0',
-          'grpcio>=1.24.3, ==1.34.1', # required by TF 2.5.1
-          'grpcio_health_checking>=1.15.0',
+          'grpcio>=1.24.3, ==1.34.1', # required by built TF 2.5.1
+          'grpcio_health_checking>=1.15.0, ==1.34.1', # required by built TF 2.5.1
           'protobuf>=3.6.1',
           'googleapis-common-protos>=1.6.0',
           'Click>=7.0',
@@ -36,8 +36,7 @@ setup(name=pkg_name,
           'flask>=1.0.0',
           'influxdb~=5.2.3',
           'kafka-python>=2.0.0',
-          'asyncio-nats-client',
-          'PyGObject'
+          'asyncio-nats-client'
             ],
         data_files=list(iter_protos(pkg_name)),
         py_modules = [

@@ -32,6 +32,7 @@ build_ace_extra:
 	cd lang/python/examples/analytics/opencv_object_detector && docker build ${ACE_NOCACHE} -t ocv-ssd:demo .
 	cd lang/python/examples/analytics/test_analytic && docker build ${ACE_NOCACHE} -t ace-test-analytic:demo .
 	cd lang/python/examples/analytics/activity_recognition && docker build ${ACE_NOCACHE} -t act-recognition:demo .
+	cd lang/python/examples/camera_stream && docker build ${ACE_NOCACHE} -t camera_stream:demo .
 
 gpu_nist-ace_demo:
 	@make build_gpu
