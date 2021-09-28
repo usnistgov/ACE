@@ -37,12 +37,12 @@ gpu_nist-ace_demo:
 	@make build_gpu
 
 gpu_nist-ace_extra:
-	@make gpu-nist-ace_demo
+	@make gpu_nist-ace_demo
 	@make build_ace_extra
 
 cpu_nist-ace_demo:
 	@make build_cpu
 
 cpu_nist-ace_extra:
-	@make cpu-nist-ace_demo
+	@make cpu_nist-ace_demo
 	@make build_ace_extra
