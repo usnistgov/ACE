@@ -17,6 +17,7 @@ RUN apt-get -y update \
     libgstrtspserver-1.0-0 libgstrtspserver-1.0-0-dbg libgstrtspserver-1.0-dev libgstrtspserver-1.0-doc \
     libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0 libgstreamer-plugins-base1.0-dev \
     libgstreamer1.0 libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgtk-3-dev gstreamer1.0-plugins-ugly \
+    libgirepository1.0-dev \
     && apt-get clean
 
 # Update pip
