@@ -113,9 +113,9 @@ An example `docker-compose` file is included in the repository which provides a 
 ACE supports GPU accelerated computing, and the base container comes with all the necessary utilities (CUDA_DNN, Tensorflow, OpenCV with FFMPEG and Gstreamer). For compatibility purposes and ease of testing, the example deployment provided *_does not_* require a GPU in order to run.
 
 To use this deployment you will need to build the ACE and object detector containers as well as create two docker volumes. 
-* You can use the `Makefile` to build the containers used in the docker-compose deployment
+* You can use the `Makefile` to build the containers used in the docker-compose deployment (here CPU build):
   ```bash
-  $ make nist-ace_extra
+  $ make cpu_nist-ace_extra
   ```
 * The necessary volumes can be built with the following commands
   ```bash
@@ -170,7 +170,7 @@ Options:
 Commands:
   config  Command used to configure the specified analytic to connect to an...
   kill    Command used to terminate the connection between the specified analytic and the video source. 
-  serve   Subcommnad for serving video for use by ACE components.
+  serve   Subcommand for serving video for use by ACE components.
   stream  Subcommand for directly streaming video (frame by frame) to an...
   test    Perform simple functionality tests to ensure that the system is...
 ```
@@ -340,7 +340,7 @@ example deployment provided (`docker-compose.yaml`) does exactly this.
 Below is an example example Dockerfile showing how the ACE container can be used 
 as a base container for an analytic:
 <pre>
-FROM datamachines/nist-ace:0.1
+FROM datamachines/nist-ace:demo
 
 ENV DEBIAN_FRONTEND noninteractive
 
