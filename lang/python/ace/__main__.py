@@ -1,10 +1,12 @@
 #!/bin/python
 
 import functools
+import importlib
 import json
 import logging
 import sys
 import threading
+# from typing_extensions import Required
 import uuid
 from queue import Queue
 
@@ -19,6 +21,7 @@ from ace import aceclient, analytic_pb2, analyticservice, grpcservice
 from ace.rtsp import RTSPHandler
 from ace.streamproxy import StreamingProxy, TestClient
 from ace.utils import FrameFilter, render
+from ace.video_file_server import VideoFileServer
 
 logger = logging.getLogger(__name__)
 
@@ -114,13 +117,29 @@ def serve(ctx, host, port):
 
 
 @serve.command()
+@click.pass_context
+@click.argument("videofile")
+@click.option("--address", "-a", default="0.0.0.0", help="Address of the streaming server")
+@click.option("--port", "-p", default=6420, help="Port the video will be streamed on")
+@click.option("--loop/--no-loop", default=True, help="If true, the video will loop continuously")
+def mjpg(ctx, videofile, address, port, loop):
+    """Starts an mjpeg server which will continually serve a videofile. If the `loop` flag
+    is set then the video will loop indefinitely until the process is terminated."""
+    server = VideoFileServer(videofile, address, port, loop)
+    print(f"Serving {videofile} as an mjpg on http://{address}:{port}/cam.mjpg")
+    server.run()
+
+
+@serve.command()
 @click.option("--src", help="Source of the stream.")
 @click.option("--endpoint", default="stream", help="Endpoint of for the RTSP stream")
 @click.option("--verbose/--no-verbose", "-v", default=False, help="Show additional debug info")
 @click.pass_context
 def rtsp(ctx, src, endpoint, verbose):
     """ Starts a GStreamer Server using the source provided (can be connected camera or external RTSP stream) on the specified endpoint."""
-    import gi
+    if not importlib.util.find_spec("gi"):
+        raise ModuleNotFoundError("Gstreamer is not installed. Please use the mjpeg server instead")
+    
     gi.require_version('Gst', '1.0')
     gi.require_version('GstRtspServer', '1.0')
     from gi.repository import GObject, Gst, GstRtspServer
@@ -316,10 +335,8 @@ def rtsp(ctx, src, verbose):
 @click.option("--verbose/--no-verbose", '-v', default=True, help="Prints additional debug output if true")
 def camera(ctx, cam_id, verbose):
     """Test that the client is able to access the camera. Displays live feed from specified camera"""
-    client = ctx.obj.client
     cap = cv2.VideoCapture(cam_id)
     frame_num = 1
-    classes = {}
     try:
         while True:
             ret, frame = cap.read()

@@ -369,8 +369,4 @@ Grafana allows users to create and/or modify dashboards that are relevant to ana
 ACE services can be configured to publish results to a message queue using event streaming platforms such as Kafka and NATS (support for both is included with the ACE library). Services can be written to consume analytic results from these queues for use by other programs or for displaying data to a user through a UI or log.
 NATS is deployed as part of ACE within `Docker-Compose`. 
 
-<<<<<<< HEAD
-For more information regarding Kafka, please refer to the [documentation.](https://kafka.apache.org/documentation/)
-=======
 For more information regarding NATS, please refer to the [documentation.](https://nats.io/)
->>>>>>> feature/demo

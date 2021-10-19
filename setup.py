@@ -52,7 +52,8 @@ setup(name=pkg_name,
             "ace.rtsp",
             "ace.rtspserver",
             'ace.__main__',
-            'ace.streamproxy'
+            'ace.streamproxy',
+            'ace.video_file_server',
             ])
 
 
