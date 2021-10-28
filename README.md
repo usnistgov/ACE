@@ -10,14 +10,13 @@ v1.1
     - [Preset Containers](#preset-containers)
     - [Prerequisites](#prerequisites)
     - [Python Installation](#python-installation)
-    - [Example Deployment](#example-deployment)
-    - [Testing the system](#testing-the-system)
   - [ACE API](#ace-api)
   - [ACE Command Line Tools](#ace-command-line-tools)
   - [ACE Services](#ace-services)
     - [Stream Filter](#stream-filter)
     - [Proxy](#proxy)
-    - [RTSP Server](#rtsp-server)
+    - [MJPEG Server](#mjpeg-server)
+    - [RTSP Server [Experimental]](#rtsp-server-experimental)
   - [Analytic Wrapper](#analytic-wrapper)
     - [gRPC Wrapper](#grpc-wrapper)
     - [Using the Analytic Wrapper](#using-the-analytic-wrapper)
@@ -52,7 +51,7 @@ ACE provides a suite of tools which can be used to construct analytic workflows 
 * Dockerfile
 
 ## Demo Application
-A demo application using ACE is available [here](https://github.com/usnistgov/ace-ui). This demo application uses a web-based UI to configure analytics and display detections and alerts to the user. In order to use the demo application you will need to build the ACE containers (run the `build.sh` script).
+A demo application using ACE is available [here](https://github.com/usnistgov/ace-ui) and is our recommended starting place if you wish to test ACE or get a better idea of what types of workflows and applications can be built using ACE. This demo application uses a web-based UI to configure analytics and display detections and alerts to the user. In order to use the demo application you will need to build the ACE containers (run the `build.sh` script).
 
 ## Quickstart
 
@@ -88,52 +87,13 @@ To run ACE command line tools first install ACE and dependencies
    ```bash
    $ pip install opencv-python
    ```
- * Install the ACE library and Kafka. 
+ * Install the ACE library. 
    From the root of the repository run:
    ```bash
    $ pip install .
    ``` 
 
-### Example Deployment
-An example `docker-compose` file is included in the repository which provides a basic deployment that can be used to demonstrate the capabilities of the ACE framework. This docker-compose file includes:
- * `camera_stream`: A service which (if running on a linux machine) will create an RTSP stream using your webcam. It is commented out by default. Uncomment the section in the `docker-compose.yml` file in order to create the stream.
- * `object_detector`: An object detector using OpenCV's DNN object detector API and using the  ssd_mobilenet_v2 model trained on the COCO dataset.
- * `ace`: A utility container that has the ACE library installed and is not running any services. It's purpose is to allow you to exec into the container in order run ACE commands from within the docker-compose environment.
- * `influxdb`: A time series database which can be used to store analytic results.
- * `grafana`: Browser-based UI used to visualize analytic results stored in the database.
 
-ACE supports GPU accelerated computing, and the base container comes with all the necessary utilities (CUDA_DNN, Tensorflow, OpenCV with FFMPEG and Gstreamer). For compatibility purposes and ease of testing, the example deployment provided *_does not_* require a GPU in order to run.
-
-To use this deployment you will need to build the ACE and object detector containers as well as create two docker volumes. 
-* You can run the `build.sh` script to build the containers used in the docker-compose deployment
-  ```bash
-  $ bash build.sh
-  ```
-* The necessary volumes can be built with the following commands
-  ```bash
-  $ docker volume create grafana-storage
-  $ docker volume create influxdb-storage
-  ```
-
-Once the containers and volumes have been created you can bring up the deployment
-```bash
-$ docker-compose up
-```
-### Testing the system
-You can do a quick test of the system using the python command line interface (CLI).
-1) First start the docker-compose deployment. If running on linux, you can first uncomment the `camera_stream` section to create an RTSP stream from your webcam.
-```bash
-$ docker-compose up 
-```
-2) In another terminal, activate your virtual environment (e.g., `source env/bin/activate`) and then use the ACE CLI to process an RTSP stream using ACE. The following command will stream your webcam to the ACE CLI and test that you are able to successfully connect to the stream..
-```bash
-$ python -m ace test rtsp --src rtsp://0.0.0.0:8554/test
-```
-3) If the RTSP test was successful you can run the following command to test that the deployed analytic is able to process the stream:
-```bash
-$ python -m ace test analytic --src rtsp://0.0.0.0:8554/test
-```
-Alternatively, in both cases,you can use the address of any available rtsp stream after the `--src` option rather than the local address provided in the commands listed above..
 
 ## ACE API
 ACE provides a consistent API for commuicating with streaming video analytics. This API is defined using Google Protocol Buffers and relies on a simple request/response pattern. While at the moment the ACE API only supports individual frames, support for additional analytic input types (e.g., small frame baches) is planned. The API can be found in the [analytic.proto](https://github.com/datamachines/NIST-ACE/blob/develop/proto/ace/analytic.proto) file. Any analytic that implements this API can be used with the ACE framework by leveraging the gRPC analytic proxy. This proxy (which is described in detail below) can be used to pass individual frames from a stream to an analytic via gRPC.
@@ -201,13 +161,9 @@ Start up a 'StreamFilter' server which can be used to modify indivdual
   can be used to change the types and magnitudes of the filters applied to
   each frame.
 
+NOTE : Currently only the gRPC API is supported by the stream filter. Analytics which do not support the gRPC version of the API will not be able to connect to ACE Stream Filters.
+
 Options:
-  --grpc / --no-grpc            If true, runs the filter with the grpc
-                                service.
-
-  --grpc_port INTEGER           Port that the gRPC endpoint runs on (if
-                                configured).
-
   -p, --port INTEGER            Port the configuration endpoint runs on.
   --filter_port INTEGER         Port that the filtering service runs on.
   -a, --analytic_addr TEXT      Address of the analytic to process the stream
@@ -250,13 +206,27 @@ The available flags are
 -p, --port TEXT   Port the service runs listens on. 
 </pre>
 
-### RTSP Server
-An RTSP service can be started using the `serve rtsp` subcommands. 
+
+### MJPEG Server
+An MJPEG server can be started using the `serve mjpg` subcommands. 
+```bash
+$ python -m ace serve mjpg [OPTIONS] VIDEOFILE
+
+  Starts an mjpeg server which will continually serve a videofile. If the`loop` flag is set then the video will loop indefinitely until the process is terminated.
+
+Options:
+  -a, --address TEXT  Address of the streaming server
+  -p, --port INTEGER  Port the video will be streamed on
+  --loop / --no-loop  If true, the video will loop continuously
+  --help              Show this message and exit.
+```
+
+### RTSP Server [Experimental]
+An RTSP service can be started using the `serve rtsp` subcommands. The RTSP server is still experimental and requires installation of additional libraries if run outside of the ACE Docker container. For this reason the MJPEG server is recommended.
 ```bash
 $ python -m ace serve rtsp [options] --src [stream source]
 
-Starts a GStreamer Server using the source provided (can be connected
-  camera or external RTSP stream) on the specified endpoint.
+Starts a GStreamer Server using the source provided (can be connected camera or external RTSP stream) on the specified endpoint.
 
 Options:
   --src TEXT                    Source of the stream.
@@ -296,24 +266,7 @@ processes the stream, creates a request to process a frame, and then passes this
 to the analytic that implements the wrapper.
 
 ### Using the Analytic Wrapper
-
-Example Python Wrapping Code:
-<pre>
-from ace import grpcservice, analytic_pb2, utils
-from analytic import Detector   # algorithm created by analytic developer
-
-def detect(req, resp):
-    frame = util.load_frame(req)
-    detector = Detector()
-    results = detector.Detect(frame)
-    resp = util.load_results(results)
-
-if __name__ == "__main__":
-    svc = grpcservice.AnalyticServiceGRPC()
-    svc.register_name("My Analytic")
-    svc.RegisterProcessVideoFrame(detect)
-    sys.exit(svc.Run())
-</pre>
+Example analytics can be found in the (examples)[lang/python/examples/analytics] folder and provide a template for creating or adapting ACE analytics.
 
 #### Create a Docker Container for Analytic
 To simplicfy the process of building and deploying ACE analytics, we provide
@@ -369,8 +322,4 @@ Grafana allows users to create and/or modify dashboards that are relevant to ana
 ACE services can be configured to publish results to a message queue using event streaming platforms such as Kafka and NATS (support for both is included with the ACE library). Services can be written to consume analytic results from these queues for use by other programs or for displaying data to a user through a UI or log.
 NATS is deployed as part of ACE within `Docker-Compose`. 
 
-<<<<<<< HEAD
-For more information regarding Kafka, please refer to the [documentation.](https://kafka.apache.org/documentation/)
-=======
 For more information regarding NATS, please refer to the [documentation.](https://nats.io/)
->>>>>>> feature/demo

@@ -50,8 +50,8 @@ class AnalyticWorker:
                 self.push_results(resp, frame_batch_obj)
                 # self.output_queue.push(
                 #     (resp, frame_batch_obj[2]), frame_number=frame_obj[1], frame_timestamp=frame_obj[0])
-        except Exception:
-            logger.exception("Analytic worker threw exception while trying to process frame")
+        except Exception as e:
+            logger.exception(f"Analytic worker threw exception while trying to process frame: {e}")
         finally:
             self.is_running = False
 
@@ -92,8 +92,8 @@ class FrameWorker:
 
 
 class FrameBuffer(PriorityQueue):
-    def __init__(self, realtime=True):
-        self.queue = PriorityQueue(0)
+    def __init__(self, realtime=True, q_size=0):
+        self.queue = PriorityQueue(q_size)
         self.realtime = realtime
         self.curr_num = 0   # most recent frame added to the queue
         self.last_pop = 0   # the last frame popped off of the buffer
@@ -180,7 +180,6 @@ class RTSPHandler:
         self.buffer = FrameBuffer(realtime=realtime)
         self.output_queue = FrameBuffer(realtime=False)
         self.workers = self.create_workers()
-
         self.terminated = False
         self.termination_event = threading.Event()
         self.workers_running = False
@@ -196,9 +195,7 @@ class RTSPHandler:
         if self.producer:
             print("WRITING UPDATES TO SUBJECT {!s} AT ADDRESS {!s}".format(sefl.subject, self.producer.addr))
         else:
-            print("No NATS address given.")
-
-        
+            print("No NATS address given.") 
 
     def create_workers(self):
         """ Returns a FrameWorker equal to the number of analytics in use. The FrameWorker reads a frame and sends it to the queue."""
