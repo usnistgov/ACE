@@ -17,21 +17,20 @@ services:
       - "-f" 
       - "/dev/null"
 
-#  camera_stream:
-#    image: datamachines/nist-ace:demo
-#    restart: always
-#    devices: 
-#      - /dev/video0
-#    ports:
-#      - "8554:8554"
-#    command:
-#      - "python3"
-#      - "-m"
-#      - "ace"
-#      - "serve"
-#      - "rtsp"
-#      - "--src=0" 
-#      - "--endpoint=test"
+  video_stream:
+   image: datamachines/nist-ace:demo
+   restart: always
+   volumes:
+     - "${VIDEO_PATH}:/videos"
+   ports:
+     - "6420:6420"
+   command:
+     - "python3"
+     - "-m"
+     - "ace"
+     - "serve"
+     - "mjpg"
+     - "/videos/${VIDEO_FILE}" 
 
   object_detector:
     image: ocv-ssd:demo

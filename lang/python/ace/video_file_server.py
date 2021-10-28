@@ -132,6 +132,7 @@ def main():
     parser.add_argument('-a', '--address', default="0.0.0.0")
     parser.add_argument("--loop", default=True, action="store_true", help="Loop video")
     args = parser.parse_args()
+    
     server = VideoFileServer(args.video_input, args.address, args.port, args.loop)
 
     print("project credit https://gist.github.com/n3wtron/4624820")

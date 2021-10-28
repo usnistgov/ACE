@@ -65,7 +65,7 @@ class KakfaProducer:
         self.producer = KafkaProducer(bootstrap_servers=addr, value_serializer=self.value_serializer)
 
     def send(self, topic, value):
-        self.producer.send(subject, message)
+        self.producer.send(topic, value)
 
 
 class ACEProducer:

@@ -138,8 +138,11 @@ def mjpg(ctx, videofile, address, port, loop):
 def rtsp(ctx, src, endpoint, verbose):
     """ Starts a GStreamer Server using the source provided (can be connected camera or external RTSP stream) on the specified endpoint."""
     if not importlib.util.find_spec("gi"):
-        raise ModuleNotFoundError("Gstreamer is not installed. Please use the mjpeg server instead")
+        # raise ModuleNotFoundError("Gstreamer is not installed. Please use the mjpeg server instead")
+        print("Gstreamer is not installed. Please use the mjpeg server instead")
+        return
     
+    import gi
     gi.require_version('Gst', '1.0')
     gi.require_version('GstRtspServer', '1.0')
     from gi.repository import GObject, Gst, GstRtspServer
