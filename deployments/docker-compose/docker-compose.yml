@@ -1,9 +1,7 @@
 # This compose file uses two containers built from the NIST-ACE repository. Run the following commands prior
 # to starting the docker compose deployment.
 #
-# docker build -t datamachines/nist-ace .
-#
-# cd lang/python/examples/analytics/opencv_object_detector && docker build -t ocv-ssd .
+# see README.md for Makefile usage
 
 
 version: "2"
@@ -32,13 +30,31 @@ services:
      - "mjpg"
      - "/videos/${VIDEO_FILE}" 
 
+  # camera_stream:
+  #   image: camera_stream:demo
+  #   restart: always
+  #   devices: 
+  #     - /dev/video0
+  #   ports:
+  #     - "8554:8554"
+  #   command:
+  #     - "python3"
+  #     - "-m"
+  #     - "ace"
+  #     - "serve"
+  #     - "rtsp"
+  #     - "--src=0" 
+  #     - "--endpoint=test"
+
   object_detector:
     image: ocv-ssd:demo
     restart: always
     ports:
       - "3000:3000"
+      - "50051:50051"
     command:    
       - "--verbose"
+      - "--grpc"
 
   nats_server:
     image: nats:2.1.9
