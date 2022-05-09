@@ -73,7 +73,7 @@ class CamHandler(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
 
-    def __init__(self, capture_path, server_address, loop_play, RequestHandlerClass, bind_and_activate=True, fps=30):
+    def __init__(self, capture_path, server_address, loop_play, RequestHandlerClass, fps=30, bind_and_activate=True):
         HTTPServer.__init__(self, server_address, RequestHandlerClass, bind_and_activate)
         ThreadingMixIn.__init__(self)
         try:
