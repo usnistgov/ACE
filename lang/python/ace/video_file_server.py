@@ -73,7 +73,7 @@ class CamHandler(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
 
-    def __init__(self, capture_path, server_address, loop_play, RequestHandlerClass, bind_and_activate=True):
+    def __init__(self, capture_path, server_address, loop_play, RequestHandlerClass, fps=30, bind_and_activate=True):
         HTTPServer.__init__(self, server_address, RequestHandlerClass, bind_and_activate)
         ThreadingMixIn.__init__(self)
         try:
@@ -84,7 +84,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
         except ValueError:
             pass
         self._capture_path = capture_path
-        fps = 30
+        #fps = 30
         self.read_delay = 1. / fps
         self._lock = threading.Lock()
         self._camera = cv2.VideoCapture(capture_path)
@@ -118,8 +118,8 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 class VideoFileServer(ThreadedHTTPServer):
-    def __init__(self, video_path:str, address:str = "0.0.0.0", port: int = 6420, loop: bool = True):
-        ThreadedHTTPServer.__init__(self, video_path, (address, port), loop, CamHandler)
+    def __init__(self, video_path:str, address:str = "0.0.0.0", port: int = 6420, loop: bool = True, fps: int =30):
+        ThreadedHTTPServer.__init__(self, video_path, (address, port), loop, CamHandler, fps)
 
     def run(self):
         self.serve_forever()
@@ -131,9 +131,10 @@ def main():
     parser.add_argument('-p', '--port', default=6420, type=int)
     parser.add_argument('-a', '--address', default="0.0.0.0")
     parser.add_argument("--loop", default=True, action="store_true", help="Loop video")
+    parser.add_argument("--fps", default=30, type=int)
     args = parser.parse_args()
     
-    server = VideoFileServer(args.video_input, args.address, args.port, args.loop)
+    server = VideoFileServer(args.video_input, args.address, args.port, args.loop, arg.fps)
 
     print("project credit https://gist.github.com/n3wtron/4624820")
     print('{} served on http://{}:{}/cam.mjpg'.format(args.video_input, args.address, args.port))
