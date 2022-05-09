@@ -81,6 +81,11 @@ class FrameWorker:
                     logger.warning("Unable to pull frame")
                     time.sleep(0.5)
                     continue
+                # if frame count is above 100 frames to still process (ie the consumer is way behind, force clear down to 10 frames, to avoid memory overload)
+                # Little to be done: the consumer is not fast enough to process the data, avoid a crash
+                if self.buffer.qsize() > 100:
+                    _ = self.buffer.pop(num_frames=91, just_pop=True)
+                    print("Remaining queue size: {}".format(self.buffer.qsize()))
                 self.buffer.push(frame)
         except Exception:
             logger.exception("Frameworker threw exception while trying to pull frame")
@@ -112,31 +117,36 @@ class FrameBuffer(PriorityQueue):
         self.log["push"][frame_timestamp] = self.curr_num
         # print("Pushing frame {!s}".format(self.curr_num))
 
-    def pop(self, num_frames=1):
+    def pop(self, num_frames=1, just_pop=False):
         #TODO
         """Returns frame object (timestamp, frame number, frame). If self.realtime is True, then it returns the most recently inserted frame_obj, otherwise it acts as a FIFO queue."""
         frame_batch_obj = []
         # print("Popping frame/batch")
         for i in range(num_frames):
             num, frame_obj = self.queue.get()
-            # print("\t - Popping frame: {!s}. Last popped was {!s}".format(abs(num), self.last_pop))
-            if abs(num) < self.last_pop:
-                # TODO inspect queue before popping to see if there are N frames to grab
-                print("\t - Frames out of order")
-                for frame_obj in frame_batch_obj:
-                    print("Adding frame {!s} back into the queue".format(frame_obj[1]))
-                    self.push(frame_obj[2], frame_number=frame_obj[1], frame_timestamp=frame_obj[0])
-                return None    
-            if not frame_batch_obj or frame_obj[1] > frame_batch_obj[-1][1]:
+            if just_pop is True:
                 frame_batch_obj.append(frame_obj)
-                continue
-            self.log["pop"][frame_obj[0]] = abs(num)
-            frame_batch_obj.insert(0, frame_obj)
+            else:
+                # print("\t - Popping frame: {!s}. Last popped was {!s}".format(abs(num), self.last_pop))
+                if abs(num) < self.last_pop:
+                    # TODO inspect queue before popping to see if there are N frames to grab
+                    print("\t - Frames out of order")
+                    for frame_obj in frame_batch_obj:
+                        print("Adding frame {!s} back into the queue".format(frame_obj[1]))
+                        self.push(frame_obj[2], frame_number=frame_obj[1], frame_timestamp=frame_obj[0])
+                    return None
+                if not frame_batch_obj or frame_obj[1] > frame_batch_obj[-1][1]:
+                    frame_batch_obj.append(frame_obj)
+                    continue
+                self.log["pop"][frame_obj[0]] = abs(num)
+                frame_batch_obj.insert(0, frame_obj)
         
         self.last_pop = abs(num)
-       
 
         return frame_batch_obj
+
+    def qsize(self):
+        return self.queue.qsize()
 
     def empty(self):
         return self.queue.empty()
