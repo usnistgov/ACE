@@ -27,6 +27,6 @@ RUN wget -q -O /tmp/get-pip.py --no-check-certificate https://bootstrap.pypa.io/
   && rm /tmp/get-pip.py
 
 ADD . /ace
-RUN pip3 install  --use-feature=in-tree-build /ace
-
+#RUN pip3 install  --use-feature=in-tree-build /ace
+RUN pip3 install --use-feature=2020-resolver /ace
 CMD ["/bin/bash"]
