@@ -3,6 +3,6 @@ dataclasses==0.6
 grpcio==1.15.0
 grpcio-health-checking==1.15.0
 grpcio-tools==1.15.0
-protobuf==3.6.1
+protobuf==3.18.3
 six==1.12.0
 
